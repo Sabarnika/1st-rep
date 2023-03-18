@@ -1,0 +1,74 @@
+// You are using GCC
+// You are using GCC
+#include<stdio.h>
+#include<string.h>
+#include<ctype.h>
+int stack[100];
+int top=-1;
+void push(char ch)
+{
+    stack[++top]=ch;
+}
+
+char pop()
+{
+    return stack[top--];
+}
+
+int priority(char x)
+{
+    if(x=='(')
+    return 0;
+    if(x=='+' || x=='-')
+    return 1;
+    if(x=='*' || x=='/')
+    return 2;
+    if(x=='^')
+    return 3;
+    
+    return 0;
+}
+
+int main()
+{
+    char str[100];
+    char t[100],x;
+    int k=0,q=0;
+    scanf("%s",str);
+    int i,n;
+    n=strlen(str);
+    for(i=0;str[i];i++)
+    {
+        if(isalnum(str[i]))
+          t[k++]=str[i];
+        else if(str[i]=='(')
+         push(str[i]);
+        else if(str[i]==')')
+        {
+            q=0;
+            while((x=pop())!='(')
+            {
+                t[k++]=x;
+                q=1;
+            }
+            if(q==0)
+            {
+                printf("%s have Duplicate parenthesis.",str);
+                break;
+            }
+        }
+        else
+        {
+            while(priority(stack[top])>=priority(str[i]))
+            {
+                t[k++]=pop();
+            }
+            push(str[i]);
+        }
+    }
+    
+    if(i==n)
+    {
+        printf("%s does not have Duplicate parenthesis",str);
+    }
+}
